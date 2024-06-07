@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Marks Entry and GPA Calculation</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            background-image: url('https://images.thequint.com/thequint/2022-06/d35a0b6b-2b9b-4d95-a913-a61a1e290f1f/iStock_481104485.jpg');
+            background-size: 1600px 750px;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            opacity: 2; /* This makes the watermark subtle */
+        }
+        .container {
+            max-width: 600px;
+            margin-top: 50px;
+            background-color: rgba(197, 36, 36, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 4px 4px rgb(255, 255, 255);
+        }
+
+        .form-group label {
+            font-weight: bold;
+            color: #ffffff;
+        }
+        .btn-custom {
+            background-color: #0066cc;
+            color: #ffffff;
+            border: none;
+        }
+        .btn-custom:hover {
+            background-color: #005bb5;
+        }
+        
+        #result-table {
+            display: none;
+            margin-top: 30px;
+        }
+        #result-table tr{
+            background-color: #333333;
+            color: #ffffff;
+        }
+        .table th, .table td {
+            text-align: center;
+        }
+        .table th {
+            background-color: #333333;
+            color: #ffffff;
+        }
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #2a2a2a;
+        }
+        .table-striped tbody tr:nth-of-type(even) {
+            background-color: #1f1f1f;
+        }
+        h2, h3 {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+        <div class="container mt-5">
+        <div id="marks-grid" class="row">
+            <div class="col-6">
+                <div class="form-group">
+                    <label for="subject1">Subject 1</label>
+                    <input type="number" class="form-control" id="subject1" placeholder="Enter marks for Subject 1">
+                </div>
+                <div class="form-group">
+                    <label for="subject2">Subject 2</label>
+                    <input type="number" class="form-control" id="subject2" placeholder="Enter marks for Subject 2">
+                </div>
+                <div class="form-group">
+                    <label for="subject3">Subject 3</label>
+                    <input type="number" class="form-control" id="subject3" placeholder="Enter marks for Subject 3">
+                </div>
+                <div class="form-group">
+                    <label for="subject4">Subject 4</label>
+                    <input type="number" class="form-control" id="subject4" placeholder="Enter marks for Subject 4">
+                </div>
+                <div class="form-group">
+                    <label for="subject5">Subject 5</label>
+                    <input type="number" class="form-control" id="subject5" placeholder="Enter marks for Subject 5">
+                </div>
+                <button class="btn btn-dark btn-outline-info" onclick="calculateGPA()">Submit</button>
+            </div>
+        </div>
+        
+        <div id="result-table" class="mt-5">
+            <h3>Marks and GPA</h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Subject</th>
+                        <th>Marks</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Subject 1</td>
+                        <td id="marks1"></td>
+                    </tr>
+                    <tr>
+                        <td>Subject 2</td>
+                        <td id="marks2"></td>
+                    </tr>
+                    <tr>
+                        <td>Subject 3</td>
+                        <td id="marks3"></td>
+                    </tr>
+                    <tr>
+                        <td>Subject 4</td>
+                        <td id="marks4"></td>
+                    </tr>
+                    <tr>
+                        <td>Subject 5</td>
+                        <td id="marks5"></td>
+                    </tr>
+                    <tr>
+                        <th>GPA</th>
+                        <th id="gpa"></th>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="btn btn-dark btn-outline-info" onclick="goBack()">Go Back</button>
+        </div>
+    </div>
+
+    <script>
+        function calculateGPA() {
+            let subject1 = parseFloat(document.getElementById('subject1').value);
+            let subject2 = parseFloat(document.getElementById('subject2').value);
+            let subject3 = parseFloat(document.getElementById('subject3').value);
+            let subject4 = parseFloat(document.getElementById('subject4').value);
+            let subject5 = parseFloat(document.getElementById('subject5').value);
+
+            var marks = [subject1, subject2, subject3, subject4, subject5].map(Number);
+            var creditPoints = [3, 3, 3, 3, 3]; // Example credit points for each subject
+
+            function percentageToGPAScale10(percentage) {
+                return (percentage / 10).toFixed(2);
+            }
+
+            var totalGradePoints = 0;
+            var totalCreditPoints = 0;
+
+            for (var i = 0; i < marks.length; i++) {
+                var gradePoint = percentageToGPAScale10(marks[i]);
+                totalGradePoints += gradePoint * creditPoints[i];
+                totalCreditPoints += creditPoints[i];
+            }
+
+            var gpa = (totalGradePoints / totalCreditPoints).toFixed(2);
+
+            document.getElementById('marks1').innerText = subject1;
+            document.getElementById('marks2').innerText = subject2;
+            document.getElementById('marks3').innerText = subject3;
+            document.getElementById('marks4').innerText = subject4;
+            document.getElementById('marks5').innerText = subject5;
+            document.getElementById('gpa').innerText = gpa;
+
+            document.getElementById('marks-grid').style.display = 'none';
+            document.getElementById('result-table').style.display = 'block';
+        }
+        function goBack() {
+            document.getElementById('result-table').style.display = 'none';
+            document.getElementById('marks-grid').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
